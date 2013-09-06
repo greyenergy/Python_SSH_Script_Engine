@@ -5,6 +5,7 @@ This is just a simple paramiko based engine for easy SSH command scripts.
 
 Example script using this engine:
 
+```python
 import time;
 
 # import the engine
@@ -30,3 +31,4 @@ example_funct = example_cmd;
 eng.add_cmd(example_funct);
 
 eng.run_ssh(); # and run the cmd sequence!
+```
