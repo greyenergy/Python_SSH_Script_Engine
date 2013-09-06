@@ -3,6 +3,9 @@ Python_SSH_Script_Engine
 
 This is just a simple paramiko based engine for easy SSH command scripts.
 
+Dependencies:
+[paramiko](https://github.com/paramiko/paramiko)
+
 Example script using this engine:
 
 ```python
