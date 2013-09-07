@@ -28,6 +28,7 @@ class FTP_Engine:
 		self.get_cmd_list(False);
 		print "\nRunning Local FTP: "+self.script_path + self.script_name+"\n";
 		os.system("cat "+self.script_path + self.script_name+" | ftp -n "+self.host);
+		os.remove(self.script_path + self.script_name);
 
 	def local_cmd_list(self):
 		# setup the creds for the script.
