@@ -35,3 +35,57 @@ eng.add_cmd(example_funct);
 
 eng.run_ssh(); # and run the cmd sequence!
 ```
+
+Using the FTP Engine to automate local and remote ftp client transfers/scripts:
+
+```python
+# import the engines
+from ssh_engine import SSH_Engine;
+from ftp_engine import FTP_Engine;
+
+os.system("echo 'testing ftp engine' > send.txt");
+
+user = "your_username";
+password = "your_password";
+ssh_port = 22;
+ftp_port = 21;
+host_a = "host a's domain goes here"; # e.g. domain.com
+host_b = "host b's domain goes here";
+
+def remote_ftp_recv_funct(engine,chan):
+	global user;
+	global password;
+	global ftp_port;
+	global host_a;
+	# prepare to run an ftp script remotely (via the ssh engine).
+	remote_ftp = FTP_Engine(user,password,ftp_port,host_a,True);
+	remote_ftp.add_cmd("get send.txt\n");
+	remote_ftp.run_remote_ftp(engine);
+
+def remote_ftp_send_funct(engine,chan):
+	global user;
+	global password;
+	global ftp_port;
+	global host_a;
+	# prepare to run an ftp script remotely (via the ssh engine).
+	remote_ftp = FTP_Engine(user,password,ftp_port,host_a,True);
+	remote_ftp.add_cmd("put recv.txt\n");
+	remote_ftp.run_remote_ftp(engine);
+
+# locally run ftp script.
+local_ftp = FTP_Engine(user,password,ftp_port,host_a);
+local_ftp.add_cmd("put send.txt\n");
+local_ftp.run_local_ftp();
+
+eng = SSH_Engine(user,password,ssh_port,host_b);
+eng.add_cmd(remote_ftp_recv_funct);
+eng.add_cmd("cp send.txt recv.txt\n");
+eng.add_cmd("echo 'testing remote ftp send from ssh command engine' >> recv.txt\n");
+eng.add_cmd(remote_ftp_send_funct);
+eng.run_ssh();
+
+local_ftp = FTP_Engine(user,password,ftp_port,host_a);
+local_ftp.add_cmd("get recv.txt\n");
+local_ftp.run_local_ftp();
+
+```
