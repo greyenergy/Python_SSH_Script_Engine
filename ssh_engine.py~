@@ -112,7 +112,7 @@ class SSH_Engine:
 				#print "Running cmd: "+str(c.cmd)+"\n";
 				self.cmd_done = False;
 				self.last_cmd = c.cmd;
-				self.cmd_entry_done = cwait;
+				self.cmd_entry_done = False;
 				# Do we need to wait for the prompt before pushing the next command?
 				self.cmd_prompt = "";
 				self.last_is_prompt_wait = c.prompt_wait;
