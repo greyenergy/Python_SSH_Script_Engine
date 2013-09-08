@@ -36,6 +36,7 @@ class FTP_Engine:
 		f.write("open "+str(self.host)+" "+str(self.port)+"\n");
 		f.write("quote user "+self.username+"\n");
 		f.write("quote pass "+self.password+"\n");
+		f.write("binary\n");
 		for c in self.cmd_list:
 			f.write(c); # That's right. It's up to the user to mark where the new lines go.
 
@@ -54,13 +55,14 @@ class FTP_Engine:
 		result.append(SSH_Cmd("open "+str(self.host)+" "+str(self.port)+"\n",False,False));
 		result.append(SSH_Cmd("quote user "+self.username+"\n",False,False));
 		result.append(SSH_Cmd("quote pass "+self.password+"\n",False,False));
+		result.append(SSH_Cmd("binary\n",False,False));
 		for c in self.cmd_list:
 			result.append(SSH_Cmd(c,False,False));
 		result.append(SSH_Cmd("disconnect\n",False,False));
 		result.append(SSH_Cmd("quit\n",False,False));
 		result.append(SSH_Cmd("",True,False)); # exit cat, remember that this needs no-wait to be True.
 		result.append("cat \"" + self.script_path + self.script_name +"\" | ftp -n\n");
-		result.append("rm -f "+ self.script_path + self.script_name +"\n");
+		result.append(SSH_Cmd("rm -f "+ self.script_path + self.script_name +"\n",False,True));
 		return result;
 
 	def run_remote_ftp(self,ssh_engine):
